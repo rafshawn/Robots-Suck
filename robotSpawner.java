@@ -11,7 +11,7 @@ public class robotSpawner {
 
   private void readRobotFile() throws Exception {
     // Read the robots from the file `robots.txt`
-    FileReader fr = new FileReader("./Text-Files/robots.txt");
+    FileReader fr = new FileReader("./txt/robots.txt");
   }
 
   public void spawnRobots() {

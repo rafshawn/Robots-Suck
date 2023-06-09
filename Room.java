@@ -18,6 +18,7 @@ public class Room {
     this.size = size;
     cell = new int[size][size];
     initializeRoom();
+    generateDirt();
   }
 
   private void initializeRoom() {
@@ -28,31 +29,39 @@ public class Room {
     }
   }
 
-  private static int getRoomSize(String filename) throws FileNotFoundException {
+  static int getRoomSize(String fileName) throws FileNotFoundException {
     // takes the size of the room from the file `room.txt`
-    filename = "./Text-Files/room.txt";
-    File file = new File(filename);
+    File file = new File(fileName);
     Scanner sc = new Scanner(file);
-    int i = sc.nextInt();
+    int roomSize = sc.nextInt();
     sc.close();
 
-    System.out.println("Input File: " + filename);
-    System.out.println("Room size: " + i + "x" + i);
+    // if integer in room file is not an odd number, terminate
+    if (roomSize % 2 != 0) {
+      System.out.println("Error: Room size must be an odd number.");
+      System.exit(0);
+    }
 
-    return i;
+    // Since the room is a square, rows = cols
+    int rows = roomSize / 2 + 1;
+    int cols = rows;
+
+    System.out.println("Input File: " + fileName);
+    System.out.println("Room size: " + roomSize);
+    System.out.println("Grid dimensions: " + rows + "x" + cols);
+
+    return roomSize;
   }
 
-  private void generateDirt() {
-    // Logic to generate dirt:
-    // We know we have the room size, we want to randomly generate dirts
-    // within the constraints of the room and never occupying spaces a robot has occupied.
-    // i.e., no. of dirt < no. of available cells - no. of robot occupied cells.
-    // Since there has to be at least one robot, we can use a while loop to generate dirts < no. of available cells.
-
+  /**
+   * Generates dirt objects within the constraints of the room and never occupying spaces a robot has occupied.
+   * i.e., no. of dirt < (no. of available cells - no. of robot occupied cells)
+   */
+  public void generateDirt() {
     dirts = new ArrayList<Dirt>();
 
     Random rand = new Random();
-    int maxOccupiable = (size * size) - 1;
+    int maxOccupiable = (size) - 1;
     int maxDirts = rand.nextInt(maxOccupiable) + 1;
 
     while (dirts.size() < maxDirts) {
@@ -60,10 +69,19 @@ public class Room {
       int y = (int) (Math.random() * size);
       if (cell[x][y] == 0) {
         dirts.add(new Dirt(x, y));
+        cell[x][y] = 1;
       }
     }
 
     System.out.println("Dirt generated: " + dirts.size());
+  }
+
+  /**
+  * Getters
+  */
+
+  public int getSize() {
+    return size;
   }
 
   public int[][] getCell(){
