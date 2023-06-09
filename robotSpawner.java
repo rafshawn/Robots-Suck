@@ -5,7 +5,7 @@ public class robotSpawner {
   ArrayList<Robot> robots;
 
   public robotSpawner() {
-    readRobotFile();
+    // readRobotFile();
     spawnRobots();
   }
 
@@ -16,7 +16,7 @@ public class robotSpawner {
 
   public void spawnRobots() {
     // TODO: Add created robots into the robots list
-    
+
   }
 
   public ArrayList<Robot> getRobots() {
