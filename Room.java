@@ -13,7 +13,6 @@ public class Room {
   private int[][] cell;
   private ArrayList<Dirt> dirts;
 
-  // initialise room inside constructor
   public Room(int size) {
     this.size = size;
     cell = new int[size][size];
@@ -25,7 +24,7 @@ public class Room {
     System.out.println("Initializing room...");
     for (int i = 0; i < size; i++) {      // iterate through rows
       for (int j = 0; j < size; j++) {    // iterate through columns
-        cell[i][j] = 0;                   // sets current cell to 0 (dirty)
+        cell[i][j] = 0;                   // sets current cell to 0 (clean)
         System.out.print(cell[i][j] + " ");
       }
       System.out.println(); 
@@ -34,20 +33,18 @@ public class Room {
   }
 
   static int getRoomSize(String fileName) throws FileNotFoundException {
-    // takes the size of the room from the file `room.txt`
+    // Takes the size of the room from the file `room.txt`
     File file = new File(fileName);
     Scanner sc = new Scanner(file);
     int roomSize = sc.nextInt();
     sc.close();
 
-    // if integer in room file is not an odd number, terminate
-    // System.out.println("roomSize = " + roomSize);
+    // If integer in room file is not an odd number, terminate
     if (roomSize % 2 == 0) {
       System.out.println("Error: Room size must be an odd number.");
       System.exit(0);
     }
 
-    // Since the room is a square, rows = cols
     int rows = roomSize;
     int cols = rows;
 
@@ -76,7 +73,7 @@ public class Room {
       int y = rand.nextInt(size);
       if (cell[x][y] == 0) {
         dirts.add(new Dirt(x, y));
-        cell[x][y] = 1;
+        cell[x][y] = 1;    // sets current cell to 1 (dirty)
         generatedDirts++;
       }
     }
