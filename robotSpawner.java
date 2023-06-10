@@ -1,10 +1,10 @@
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class robotSpawner {
+public class RobotSpawner {
   ArrayList<Robot> robots;
 
-  public robotSpawner() {
+  public RobotSpawner() {
     // readRobotFile();
     spawnRobots();
   }

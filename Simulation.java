@@ -20,9 +20,6 @@ public class Simulation {
     robots = new ArrayList<Robot>();
     // roboSpawner = new robotSpawner();
 
-    // generate dirt
-    room.generateDirt();
-
     // spawn robots
     // robotSpawner.spawnRobots();
 
