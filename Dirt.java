@@ -12,6 +12,10 @@ public class Dirt {
     cleaned = false;
   }
 
+  /**
+   * Getters
+   */
+
   public int getX() {
     return x;
   }

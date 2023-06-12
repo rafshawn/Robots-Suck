@@ -3,6 +3,13 @@ import java.util.ArrayList;
 
 /**
  * Simulation
+ * ---
+ * @author Shawn Adrian
+ * 
+ * Compile with: javac -d out *.java
+ * Run with: java -cp out Simulation
+ * 
+
  * TODO: Get robot to spawn before dirt gets generated
  */
 public class Simulation {
@@ -13,15 +20,20 @@ public class Simulation {
   ArrayList<Dirt> dirts;
   ArrayList<Robot> robots;
   RobotSpawner robotSpawner;
+  GetDirty getDirty;
   
   public Simulation() throws FileNotFoundException {
     // initialize simulation objects
     room = new Room(Room.getRoomSize(roomFile));
     robotSpawner = new RobotSpawner();
+    getDirty = new GetDirty();
     robots = new ArrayList<Robot>();
 
     // spawn robots
-    robots = robotSpawner.spawnRobots(robotFile);
+    robots = robotSpawner.spawnRobots(robotFile, room);
+
+    // generate dirt
+    dirts = getDirty.generateDirt(room, robots);
 
     // start simulation
     startSimulation();
@@ -33,9 +45,11 @@ public class Simulation {
     // Create a new instance of RobotSpawner
     RobotSpawner robotSpawner = new RobotSpawner();
     
+    /*
     for (Robot robot : robots) {
       robot.moveInSpiral(room);
     }
+     */
   }
 
   public static void main(String[] args) throws FileNotFoundException {

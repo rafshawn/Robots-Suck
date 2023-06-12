@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -11,13 +10,13 @@ import java.util.Scanner;
 public class Room {
   private int size;
   private int[][] cell;
-  private ArrayList<Dirt> dirts;
+  
 
   public Room(int size) {
     this.size = size;
     cell = new int[size][size];
     initializeRoom();
-    generateDirt();
+    // generateDirt();
   }
 
   private void initializeRoom() {
@@ -51,57 +50,19 @@ public class Room {
     System.out.println("Input File: " + fileName);
     System.out.println("Room size: " + rows + "x" + cols);
     System.out.println("Total number of cells: " + (rows * cols));
+    System.out.println();
 
     return roomSize;
   }
 
   /**
-   * Generates dirt objects within the constraints of the room and never occupying spaces a robot has occupied.
-   * i.e., no. of dirt < (no. of available cells - no. of robot occupied cells)
-   * We assume that by default, a robot occupies the centre of the room.
-   */
-  public void generateDirt() {
-    dirts = new ArrayList<Dirt>();
-
-    Random rand = new Random();
-    int maxOccupiable = (size * size) - 1;
-    int generatedDirts = 0;
-    int maxDirts = rand.nextInt(maxOccupiable) + 1;
-
-    while (generatedDirts < maxDirts) {
-      int x = rand.nextInt(size);
-      int y = rand.nextInt(size);
-      if (cell[x][y] == 0) {
-        dirts.add(new Dirt(x, y));
-        cell[x][y] = 1;    // sets current cell to 1 (dirty)
-        generatedDirts++;
-      }
-    }
-
-    System.out.println("Dirt generated: " + dirts.size());
-    // print new grid with dirt
-    for (int i = 0; i < size; i++) {
-      for (int j = 0; j < size; j++) {
-        System.out.print(cell[i][j] + " ");
-      }
-      System.out.println();
-    }
-    System.out.println();
-  }
-
-  /**
   * Getters
   */
-
   public int getSize() {
     return size;
   }
 
   public int[][] getCell(){
     return cell;
-  }
-
-  public ArrayList<Dirt> getDirtArrays() {
-    return dirts;
   }
 }

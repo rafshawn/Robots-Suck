@@ -39,17 +39,26 @@ public class RobotSpawner {
     }
   }
 
-  public ArrayList<Robot> spawnRobots(String robotFile) throws FileNotFoundException {
-    // TODO: Add created robots into the robots list
-    
-    // spawn first robot at the center
-    // spawned.add(new Robot(0, 0, Direction.U));
-
-    // Call getRobotSpawn to read robots from the file and add them to the robots list
+  public ArrayList<Robot> spawnRobots(String robotFile, Room room) throws FileNotFoundException {
     getRobotSpawn(robotFile);
-
-    // TODO: spawn every subsequent robot given that # of robots > 1
-
+  
+    // Spawn the first robot at the center of the room
+    int centerX = room.getSize() / 2;
+    int centerY = room.getSize() / 2;
+    robots.get(0).setX(centerX);
+    robots.get(0).setY(centerY);
+    robots.get(0).setActive(true);  // TODO: Remove after robot spawn fixed
+  
+    // spawn every subsequent robot given that # of robots > 1
+    for (int i = 1; i < robots.size(); i++) {
+      // Set the position of the i-th robot using the coordinates from the file
+      int x = robots.get(i).getX();
+      int y = robots.get(i).getY();
+      robots.get(i).setX(x);
+      robots.get(i).setY(y);
+      robots.get(0).setActive(false);  // TODO: Remove after robot spawn fixed
+    }
+  
     return robots;
   }
 

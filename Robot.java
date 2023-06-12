@@ -11,55 +11,16 @@ enum Direction{
 }
 
 public class Robot {  // make this robot implement threads
-  private int x;      // x-axis position
-  private int y;      // y-axis position 
-  Direction dir;      // direction
+  private int x;          // x-axis position
+  private int y;          // y-axis position 
+  private Direction dir;  // direction
+  private boolean active; // true if robot is active
   
   public Robot(int x, int y, Direction dir) {
     this.x = x;
     this.y = y;
     this.dir = dir;
-  }
-
-  // Getters
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
-  public Direction getDir() {
-    return dir;
-  }
-
-  // Setters
-  public void moveUp() {
-    setY(y - 1);
-    dir = Direction.U;
-  }
-  public void moveDown() {
-    setY(y + 1);
-    dir = Direction.D;
-  }
-
-  public void moveRight() {
-    setX(x + 1);
-    dir = Direction.R;
-  }
-
-  public void moveLeft() {
-    setX(x - 1);
-    dir = Direction.L;
-  }
-
-  public void setX(int x){
-    this.x = x;
-  }
-
-  public void setY(int y){
-    this.y = y;
+    this.active = false; // robot inactive at start
   }
 
   public void moveInSpiral(Room room) {
@@ -122,7 +83,7 @@ public class Robot {  // make this robot implement threads
           break;
       }
 
-      // Increment steps
+      // atEdge = atEdge();
       steps++;
       }
     }
@@ -131,5 +92,57 @@ public class Robot {  // make this robot implement threads
   private boolean atEdge() {
     //check if the robot is beyond room's border
     return false;
+  }
+
+  // Getters
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public Direction getDir() {
+    return dir;
+  }
+
+  public boolean isActive() {
+    return active;
+  }
+
+  // Setters
+  public void setX(int x){
+    this.x = x;
+  }
+
+  public void setY(int y){
+    this.y = y;
+  }
+  public void moveUp() {
+    setY(y - 1);
+    // dir = Direction.U;
+  }
+  public void moveDown() {
+    setY(y + 1);
+    // dir = Direction.D;
+  }
+
+  public void moveRight() {
+    setX(x + 1);
+    // dir = Direction.R;
+  }
+
+  public void moveLeft() {
+    setX(x - 1);
+    // dir = Direction.L;
+  }
+
+  public void setDir(Direction dir) {
+    this.dir = dir;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
   }
 }
