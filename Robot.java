@@ -6,7 +6,6 @@
  */
 
 enum Direction{
-  // Up, Down, Left, Right
   U, D, L, R;
 }
 
@@ -24,74 +23,131 @@ public class Robot {  // make this robot implement threads
   }
 
   public void moveInSpiral(Room room) {
-    /** Logic behind method:
-     * Assuming there is always a robot starting in the centre cell
-     * The robot travels in a counter-clockwise spiral pattern
-     * until it reaches the edge of the room.
-     * The initial direction of travel is up by default.
-     * TODO: Move in spiral
-     */
-
     int size = room.getSize();
-    int maxSteps = (size - 1) / 2;
-    int steps = 0;                  // steps taken (0 at start)
+    int maxSteps = (size + 1) / 2;
+    int steps = 0;
     boolean atEdge = false;
+    
+    boolean[][] visited = new boolean[size][size];
+    boolean completedCycle = false;
 
-    // TODO: While not in room edge and still has steps, move in spiral
-    while (!atEdge && steps < maxSteps) {
-      while (!atEdge && room.getCell()[x][y] == 0) {
-      // move the robot direction
-      switch (dir) {
-        case U:
-          moveUp();
-          break;
-        case D:
-          moveDown();
-          break;
-        case L:
-          moveLeft();
-          break;
-        case R:
-          moveRight();
-          break;
+
+    while (steps <= maxSteps) {
+      for (int i = 0; i < steps; i++) {
+        move(Direction.U);
+        cleanCurrentCell(room);
+        if (atEdge(size)) {
+          visited[x][y] = true;
+          completedCycle = true;
+        }
+        updateRoomState(room);
       }
-
-      // Clean cell if dirty
-      if (room.getCell()[x][y] == 1) {
-        room.getCell()[x][y] = 0;
+      for (int i = 0; i < steps; i++) {
+        move(Direction.L);
+        cleanCurrentCell(room);
+        if (atEdge(size)) {
+          visited[x][y] = true;
+          completedCycle = true;
+        }
+        updateRoomState(room);
       }
-
-      // Check if robot is at edge
-      atEdge = atEdge();
-
-      /** Robot should not move beyond room's border.
-       * Once the robot reaches edge, move in circular motion.
-       * TODO: Move in circular motion
-       */
-      switch (dir) {
-        case U:
-          moveUp();
-          break;
-        case D:
-          moveDown();
-          break;
-        case L:
-          moveLeft();
-          break;
-        case R:
-          moveRight();
-          break;
+      for (int i = 0; i < steps + 1; i++) {
+        move(Direction.D);
+        cleanCurrentCell(room);
+        if (atEdge(size)) {
+          visited[x][y] = true;
+          completedCycle = true;
+        }
+        updateRoomState(room);
       }
-
-      // atEdge = atEdge();
-      steps++;
+      for (int i = 0; i < steps + 1; i++) {
+        move(Direction.R);
+        cleanCurrentCell(room);
+        if (atEdge(size)) {
+          visited[x][y] = true;
+          completedCycle = true;
+        }
+        updateRoomState(room);
       }
+      steps += 2;
+      if (completedCycle) {
+        boolean allCellsClean = checkAllCellsClean(visited);
+        if (allCellsClean) {
+          System.out.println("Room is clean!");
+          return;
+        }
+      }
+    }
+
+  System.out.println("Cannot clean all edge cells.");
+  }
+
+  private void move(Direction dir) {
+    switch (dir) {
+      case U:
+        moveUp();
+        break;
+      case D:
+        moveDown();
+        break;
+      case L:
+        moveLeft();
+        break;
+      case R:
+        moveRight();
+        break;
     }
   }
 
-  private boolean atEdge() {
-    //check if the robot is beyond room's border
-    return false;
+  private void cleanCurrentCell(Room room) {
+    int cellValue = room.getCell()[x][y];
+    if (cellValue == 1) {
+      room.getCell()[x][y] = 0;
+    }
+  }
+  
+  private void updateRoomState(Room room) {
+    System.out.println("Updated Room State:");
+    int[][] cell = room.getCell();
+    for (int i = 0; i < cell.length; i++) {
+      for (int j = 0; j < cell[i].length; j++) {
+        if (i == x && j == y) {
+          switch (dir) {
+            case U:
+              System.out.print("↑ ");
+              break;
+            case D:
+              System.out.print("↓ ");
+              break;
+            case L:
+              System.out.print("← ");
+              break;
+            case R:
+              System.out.print("→ ");
+              break;
+          }
+        } else {
+          System.out.print(cell[i][j] + " ");
+        }
+      }
+      System.out.println();
+    }
+    System.out.println();
+  }
+
+  private boolean checkAllCellsClean(boolean[][] visited) {
+    for (int i = 0; i < visited.length; i++) {
+      for (int j = 0; j < visited[0].length; j++) {
+        if (!visited[i][j]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private boolean atEdge(int size) {
+    return (x == 0 || x == size - 1 || y == 0 || y == size - 1);
   }
 
   // Getters
@@ -120,22 +176,22 @@ public class Robot {  // make this robot implement threads
     this.y = y;
   }
   public void moveUp() {
-    setY(y - 1);
-    // dir = Direction.U;
+    setX(x - 1);
+    dir = Direction.U;
   }
   public void moveDown() {
-    setY(y + 1);
-    // dir = Direction.D;
+    setX(x + 1);
+    dir = Direction.D;
   }
 
   public void moveRight() {
-    setX(x + 1);
-    // dir = Direction.R;
+    setY(y + 1);
+    dir = Direction.R;
   }
 
   public void moveLeft() {
-    setX(x - 1);
-    // dir = Direction.L;
+    setY(y - 1);
+    dir = Direction.L;
   }
 
   public void setDir(Direction dir) {

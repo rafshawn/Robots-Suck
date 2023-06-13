@@ -14,23 +14,44 @@ public class RobotSpawner {
     // Read the robots from the file `robots.txt`
     File file = new File(fileName);
     Scanner sc = new Scanner(file);
-    int numRobots = sc.nextInt();
-    sc.nextLine();
-    // TODO: If robots > 1, first robot will default to spawning at the center and the direction of travel being UP
-    for (int i = 0; i < numRobots; i++) {
-      int x = sc.nextInt();
-      int y = sc.nextInt();
-      String dirString = sc.next();
-      Direction dir = Direction.valueOf(dirString);
-      // TODO: If statement to check if the parameters set in the text file are correct
 
-      // Add robot to ArrayList
-      robots.add(new Robot(x, y, dir));
+    if (sc.hasNextInt()){
+      int numRobots = sc.nextInt();
+      sc.nextLine();
+
+      // Checks each line to make sure input is correct
+      for (int i = 0; i < numRobots; i++) {
+        if(sc.hasNextInt()){
+          int x = sc.nextInt();
+          if(sc.hasNextInt()){
+            int y = sc.nextInt();
+            if(sc.hasNext()){
+              String dirString = sc.next();
+              Direction dir = Direction.valueOf(dirString);
+
+              // If all conditions met, add robot to ArrayList
+              robots.add(new Robot(x, y, dir));
+            } else {
+              System.out.println("Error: Direction must be a string or is missing.");
+              System.exit(0);
+            }
+          } else {
+            System.out.println("Error: Y coordinate must be an integer or is missing.");
+            System.exit(0);
+          }
+        } else {
+          System.out.println("Error: X coordinate must be an integer or is missing.");
+          System.exit(0);
+        }
+      }
+    } else {
+      System.out.println("Error: Number of robots must be an integer or is missing.");
     }
+    
     sc.close();
 
     System.out.println("Input File: " + fileName);
-    System.out.println("Total number of robots: " + numRobots);
+    System.out.println("Total number of robots: " + robots.size());
     // print position of each robot
     for (Robot robot : robots) {
       System.out.println("Position: (" + robot.getX() + ", " + robot.getY() + ")");
@@ -42,6 +63,8 @@ public class RobotSpawner {
   public ArrayList<Robot> spawnRobots(String robotFile, Room room) throws FileNotFoundException {
     getRobotSpawn(robotFile);
   
+    // TODO: if only one robot, second line scanned is the coordinates
+
     // Spawn the first robot at the center of the room
     int centerX = room.getSize() / 2;
     int centerY = room.getSize() / 2;
@@ -56,13 +79,21 @@ public class RobotSpawner {
       int y = robots.get(i).getY();
       robots.get(i).setX(x);
       robots.get(i).setY(y);
-      robots.get(0).setActive(false);  // TODO: Remove after robot spawn fixed
+      robots.get(0).setActive(true);  // TODO: Remove after robot spawn fixed
     }
   
     return robots;
   }
 
+  /**
+   * Getters
+   */
   public ArrayList<Robot> getRobots() {
     return robots;
+  }
+
+  // getter for numRobots
+  public int getNumRobots() {
+    return robots.size();
   }
 }

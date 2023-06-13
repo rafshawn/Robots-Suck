@@ -45,11 +45,9 @@ public class Simulation {
     // Create a new instance of RobotSpawner
     RobotSpawner robotSpawner = new RobotSpawner();
     
-    /*
     for (Robot robot : robots) {
       robot.moveInSpiral(room);
     }
-     */
   }
 
   public static void main(String[] args) throws FileNotFoundException {
