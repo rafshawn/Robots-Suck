@@ -42,7 +42,7 @@ public class Robot {  // make this robot implement threads
         }
         updateRoomState(room);
       }
-      for (int i = 0; i < steps; i++) {
+      for (int i = 0; i < steps && !atEdge(size); i++) {
         move(Direction.L);
         cleanCurrentCell(room);
         if (atEdge(size)) {
@@ -51,7 +51,7 @@ public class Robot {  // make this robot implement threads
         }
         updateRoomState(room);
       }
-      for (int i = 0; i < steps + 1; i++) {
+      for (int i = 0; i < steps + 1 && !atEdge(size); i++) {
         move(Direction.D);
         cleanCurrentCell(room);
         if (atEdge(size)) {
@@ -60,7 +60,7 @@ public class Robot {  // make this robot implement threads
         }
         updateRoomState(room);
       }
-      for (int i = 0; i < steps + 1; i++) {
+      for (int i = 0; i < steps + 1 && !atEdge(size); i++) {
         move(Direction.R);
         cleanCurrentCell(room);
         if (atEdge(size)) {
@@ -75,6 +75,8 @@ public class Robot {  // make this robot implement threads
         if (allCellsClean) {
           System.out.println("Room is clean!");
           return;
+        } else {
+          completedCycle = false;
         }
       }
     }
@@ -184,14 +186,14 @@ public class Robot {  // make this robot implement threads
     dir = Direction.D;
   }
 
-  public void moveRight() {
-    setY(y + 1);
-    dir = Direction.R;
-  }
-
   public void moveLeft() {
     setY(y - 1);
     dir = Direction.L;
+  }
+
+  public void moveRight() {
+    setY(y + 1);
+    dir = Direction.R;
   }
 
   public void setDir(Direction dir) {
